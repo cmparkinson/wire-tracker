@@ -1,5 +1,12 @@
 Wiring Tracker
 
 This project was an excuse to play around with SmartGWT, Spring 3 and the
-JPA 2.0 reference implementation (EclipseLink).  The GUI is incomplete, however
+JPA 2 reference implementation (EclipseLink).  The GUI is incomplete, however
 the server-side components are functional.
+
+The application consists of a GWT-based web client that communicates with a
+RESTful Spring Web MVC server.  Persistence is handled via the JPA 2 interface
+and uses EclipseLink to map the domain objects to MySQL.
+
+The server is designed to run in Tomcat, but should work in any servlet
+container.
