@@ -1,0 +1,5 @@
+Wiring Tracker
+
+This project was an excuse to play around with SmartGWT, Spring 3 and the
+JPA 2.0 reference implementation (EclipseLink).  The GUI is incomplete, however
+the server-side components are functional.

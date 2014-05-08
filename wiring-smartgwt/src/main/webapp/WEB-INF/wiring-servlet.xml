@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+    <import resource="classpath:domain-config.xml"/>
+
+    <context:component-scan base-package="ca.parkie.wiring.controller"/>
+
+    <mvc:annotation-driven/>
+    <!--
+    <security:http auto-config="true">
+        <security:intercept-url pattern="/rest/fetch/**" access="ROLE_USER"/>
+        <security:intercept-url pattern="/**/*.html" access="ROLE_USER"/>
+        <security:intercept-url pattern="/**" access="ROLE_USER"/>
+        <security:intercept-url pattern="/auth/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    </security:http>
+
+    <bean id="customAuthenticationProvider" class="ca.parkie.wiring.controller.CustomAuthenticationProvider">
+        <security:authentication-manager alias="authenticationManager">
+            <security:authentication-provider ref="customAuthenticationProvider"/>
+        </security:authentication-manager>
+    </bean>
+    -->
+    <!-- Enable @RequestMapping process on type level and method level-->
+
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="alwaysUseFullPath" value="true"/>
+    </bean>
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jacksonMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+
+     <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        <property name="supportedMediaTypes" value="application/json"/>
+    </bean>
+
+    <bean id="dozerMapper" class="org.dozer.DozerBeanMapper">
+        <property name="mappingFiles">
+            <list>
+                <value>dozer-mappings.xml</value>
+            </list>
+        </property>
+        <property name="customConvertersWithId">
+            <map>
+                <entry key="itemTypeConverter" value-ref="itemTypeConverter"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="itemTypeConverter" class="ca.parkie.wiring.dto.ItemTypeConverter"/>
+
+</beans>
